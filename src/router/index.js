@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -47,6 +48,8 @@ import FormsPage from '../docs/FormsPage';
 import SearchPage from '../docs/SearchPage';
 import ValidationPage from '../docs/ValidationPage';
 import FooterPage from '../docs/FooterPage';
+import RichGridExample from '../docs/RichGridExample';
+import ChemGridPage from '../docs/ChemGridPage';
 
 Vue.use(Router);
 
@@ -59,6 +62,16 @@ export default new Router({
     },
 
     // PAGES
+    {
+      path: '/richgrid',
+      name: 'RichGridExample',
+      component: RichGridExample
+    },
+    {
+      path: '/chemgrid',
+      name: 'ChemGridPage',
+      component: ChemGridPage
+    },
     {
       path: '/css',
       name: 'CSSPage',

@@ -1,108 +1,78 @@
 <template>
-    <div>
-      <EdgeHeader color="teal darken-1"/>
-      <div class="container free-bird">
-        <row>
-          <column md="10" class="mx-auto float-none white z-depth-1 py-2 px-2">
-            <card-body>
-              <h2 class="h2-responsive"><strong>MDB Vue</strong></h2>
-              <p class="pb-4">Vue Bootstrap with Material Design</p>
-            </card-body>
-          </column>
-        </row>
+<div class="container container-fluid">
+  <!--Grid row-->
+  <div class="row justify-content-lg-center">
+      <!--Grid column-->
+      <div class="col-lg-8 offset-lg-2">
+        <button @click="getSelectedRows()">Get Selected Rows</button>
+         <ag-grid-vue style="width: 500px; height: 500px;"
+                     class="ag-theme-balham"
+                     :columnDefs="columnDefs"
+                     :rowData="rowData"
+                     :enableSorting="true"
+                     :enableFilter="true"
+                     rowSelection="multiple"
+
+                     :gridReady="onGridReady">
+        </ag-grid-vue>
       </div>
-      <container>
-        <row>
-          <column md="10" class="mx-auto mt-4 text-center">
-            <p class="pt-4">Google has designed a Material Design to make the web more beautiful and more user-friendly.</p>
-            <p>Twitter has created a Bootstrap to support you in faster and easier development of responsive and effective websites.</p>
-            <p>We present you a framework containing the best features of both of them - Material Design for Bootstrap.</p>
-          </column>
-        </row>
-        <hr/>
-      <h3 class="pt-5 text-center">See it in action</h3>
-      <row>
-        <column md="4" class="text-center home-feature-box">
-          <a href="#/css">
-            <fa icon="css3" class="pink-text" />
-            <span>CSS</span>
-          </a>
-        </column>
-        <column md="4" class="text-center home-feature-box">
-          <a href="#/components">
-            <fa icon="cubes" class="blue-text" />
-            <span>COMPONENTS</span>
-          </a>
-        </column>
-        <column md="4" class="text-center home-feature-box">
-          <a href="#/advanced">
-            <fa icon="code" class="green-text" />
-            <span>ADVANCED</span>
-          </a>
-        </column>
-      </row>
-      <ul class="py-2 text-center">
-        <li><btn tag="a" size="sm" color="default" href="#/components/grid" target="_blank">Grid</btn></li>
-        <li><btn tag="a" size="sm" color="default" href="#/components/liveDemo" target="_blank">Live Demo</btn></li>
-      </ul>
-      </container>
-    </div>
+      <!--Grid column-->
+      <!--Grid column-->
+      <div class="col-lg-2"> </div>
+      <!--Grid column-->
+  </div>
+  </div>
 </template>
 
-<script>
-import { Container, Column, Row, Fa, Navbar, NavbarItem, NavbarNav, NavbarCollapse, Btn, EdgeHeader, CardBody } from 'mdbvue';
 
-export default {
-  name: 'HomePage',
-  components: {
-    Container,
-    Column,
-    Row,
-    Fa,
-    Navbar,
-    NavbarItem,
-    NavbarNav,
-    NavbarCollapse,
-    Btn,
-    EdgeHeader,
-    CardBody
-  }
-};
+<script>
+    import {AgGridVue} from "ag-grid-vue";
+
+    export default {
+        name: 'HomePage',
+        data() {
+            return {
+                columnDefs: null,
+                rowData: null
+            } ;
+        },
+             components: {
+            AgGridVue
+        },
+           methods: {
+            onGridReady(params) {
+                this.gridApi = params.api;
+                this.columnApi = params.columnApi;
+            },
+            getSelectedRows() {
+                const selectedNodes = this.gridApi.getSelectedNodes();
+                const selectedData = selectedNodes.map(node => node.data);
+                const selectedDataStringPresentation = selectedData.map(node => node.make + ' ' + node.model).join(', ');
+                alert(`Selected nodes: ${selectedDataStringPresentation}`);
+            }
+        },
+        beforeMount() {
+            this.columnDefs = [
+                {headerName: 'Make', field: 'make', rowGroupIndex: 0},
+                {headerName: 'Model', field: 'model'},
+                {headerName: 'Price', field: 'price'}
+            ];
+
+            this.autoGroupColumnDef = {
+                headerName: 'Model',
+                field: 'model',
+                cellRenderer: 'agGroupCellRenderer',
+                cellRendererParams: {
+                    checkbox: true
+                }
+            };
+
+            fetch('https://api.myjson.com/bins/15psn9')
+                .then(result => result.json())
+                .then(rowData => this.rowData = rowData);
+        }
+    }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-
-.home-feature-box {
-  padding: 40px 0;
-}
-
-.home-feature-box i {
-  font-size: 6rem;
-}
-
-.home-feature-box span {
-  display: block;
-  color: black;
-  font-size: 20px;
-  font-weight: bold;
-  padding-top: 20px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-}
-
-a {
-  color: #42b983;
-}
-
+<style>
 </style>
