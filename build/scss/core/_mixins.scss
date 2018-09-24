@@ -426,10 +426,10 @@
   .navbar-nav {
     .nav-item {
       .nav-link {
-        color: $color;
+        color: #ffffff;
         transition: $navbar-nav-transition;
         &:hover {
-          color: $color-2;
+          color: #e1f5fe;
         }
       }
       &.active>.nav-link {

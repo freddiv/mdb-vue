@@ -2,6 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 import Vue from 'vue';
+import VueRouter from 'vue-router';
+
 import App from './App';
 import router from './router';
 import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
@@ -12,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../build/css/mdb.css';
 
 Vue.config.productionTip = false;
-
+Vue.use(VueRouter);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

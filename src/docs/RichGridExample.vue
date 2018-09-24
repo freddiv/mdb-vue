@@ -1,9 +1,9 @@
 <template>
 <div class="container container-fluid">
   <!--Grid row-->
-  <div class="row justify-content-lg-center">
+  <div class="row justify-content-center">
       <!--Grid column-->
-    <div class="col-lg-8 offset-lg-2">
+    <div class="col-12">
     <div style="width: 760px;">
         <div style="padding: 4px;">
             <div style="float: right;">
@@ -82,9 +82,6 @@
         </div>
     </div>
   </div>
-  <!--Grid column-->
-  <!--Grid column-->
-  <div class="col-lg-2"> </div>
   <!--Grid column-->
   </div>
   </div>

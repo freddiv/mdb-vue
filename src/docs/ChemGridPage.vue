@@ -23,8 +23,12 @@
 
 <script>
    import {AgGridVue} from "ag-grid-vue";
+  /* eslint-disable no-unused-vars */
+  //  import {JL} from 'jsnlog';
+    // "mylogger" logs to both the server and the console
 
-    export default {
+
+export default {
         name: 'ChemGridPage',
         data() {
             return {
@@ -47,11 +51,13 @@
                 const selectedNodes = this.gridApi.getSelectedNodes();
                 const selectedData = selectedNodes.map(node => node.data);
                 const selectedDataStringPresentation = selectedData.map(node => node.id + ' ' + node.n).join(', ');
+                 console.log('wtf');
                 alert(`Selected nodes: ${selectedDataStringPresentation}`);
+
             }
         },
         beforeMount() {
-            this.columnDefs = [
+                this.columnDefs = [
                 {headerName: 'QC Level', field: 'q'},
                 {headerName: 'DTXSID', field: 'id', checkboxSelection: true},
                 {headerName: 'Preferred Name', field: 'n'},
@@ -70,9 +76,12 @@
 
         fetch('./static/chemicals.json')
         .then(result => result.json())
-        .then(rowData => this.rowData = rowData);
+        .then(rowData => {
+          this.rowData = rowData;
+        });
         }
     }
+
 </script>
 
 <style>
@@ -82,6 +91,5 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

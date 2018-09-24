@@ -90,9 +90,9 @@ $blue-lighten-4:  #bbdefb !default;
 $blue-lighten-3:  #90caf9 !default;
 $blue-lighten-2:  #64b5f6 !default;
 $blue-lighten-1:  #42a5f5 !default;
-$blue-base:       #2196f3 !default;
-$blue-darken-1:   #1e88e5 !default;
-$blue-darken-2:   #1976d2 !default;
+$blue-base:       #337ab7 !default;
+$blue-darken-1:   #0E6993 !default;
+$blue-darken-2:   #23527c !default;
 $blue-darken-3:   #1565c0 !default;
 $blue-darken-4:   #0d47a1 !default;
 $blue-accent-1:   #82b1ff !default;
@@ -687,7 +687,7 @@ $error-color:          $red-base !default;
 
 $material-colors: () !default;
 $material-colors: map-merge((
-  "primary-color":        $primary-color,
+  "primary-color":        $blue-base,
   "primary-color-dark":   $primary-color-dark,
   "secondary-color":      $secondary-color,
   "secondary-color-dark": $secondary-color-dark,
@@ -756,7 +756,7 @@ $social-colors: map-merge((
 // MDB buttons colors
 $mdb-colors: () !default;
 $mdb-colors: map-merge((
-  "primary":     $primary-color,
+  "primary":     $blue-base,
   "danger":      $danger-color,
   "warning":     $warning-color-dark,
   "success":     $success-color,
@@ -795,7 +795,7 @@ $mdb-colors: map-merge((
 // Basic colors
 $basic: () !default;
 $basic: map-merge((
-  "primary":  $primary-color,
+  "primary":  $blue-base,
   "danger":   $danger-color,
   "warning":  $warning-color,
   "success":  $success-color,
@@ -804,7 +804,7 @@ $basic: map-merge((
 
 $basic-mdb-colors: () !default;
 $basic-mdb-colors: map-merge((
-  "primary":     $primary-color,
+  "primary":     $blue-base,
   "danger":      $danger-color,
   "warning":     $warning-color-dark,
   "success":     $success-color,
@@ -817,7 +817,7 @@ $basic-mdb-colors: map-merge((
 
 $pagination-colors: () !default;
 $pagination-colors: map-merge((
-  "blue": $primary-color,
+  "blue": $blue-base,
   "red": $danger-color,
   "teal": $default-color,
   "dark-grey": $special-color,
@@ -852,7 +852,7 @@ $switch-colors: map-merge((
 
 $dropdown-colors: () !default;
 $dropdown-colors: map-merge((
-  "primary"  : $primary-color,
+  "primary"  : $blue-darken-1,
   "danger"   : $danger-color-dark,
   "default"  : $default-color,
   "secondary": $secondary-color,
