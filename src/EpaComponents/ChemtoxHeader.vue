@@ -87,13 +87,23 @@ const TOKEN_KEY = 'user-token';
 const userTokenStorage = {
   fetch: function () {
     var userToken = localStorage.getItem(TOKEN_KEY) || '';
-    console.log(userToken);
-    var n = Date.now();
-    console.log(n);
+    if (userToken.length){
+console.log(userToken.length);
+
+   var compDate =  new Date(Date.now());
+   var d = new Date();
+
+   var n = d.getDate();
+   var h = d.getHours();
+   var m = d.getMinutes();
+
     var decoded = jwt.decode(userToken, {complete: true});
+   var  expire = new Date(decoded.payload.exp)
     console.log(decoded);
-    console.log(n);
-    console.log(decoded.payload.exp);
+    console.log(n + ' - ' +  h +  ' - ' + m);
+    console.log(decoded.payload.exp + ' : '  + expire);
+    console.log(compDate);
+    }
     return userToken;
   },
   save: function (token) {
@@ -294,9 +304,10 @@ export default {
         userId: user.id,
         roles: user.roles
       }
-      const token = this.theJwt.sign(jwtData,
-      'usingalongchemicalnameforsecret',
-      {expiresIn: '1h'});
+      var token = this.theJwt.sign({
+  exp: Date.now() + (1000 * 60 * 60),
+  data: jwtData
+}, 'usingalongchemicalnameforsecret');
       this.userTokenStorage.save(token);
     // navigate to authenticated content.
       this.router.push('/richgrid');
