@@ -43,7 +43,7 @@
        <form class="form-inline">
       <input class="form-control mr-auto p-2" type="text" placeholder="Search" aria-label="Search">
     </form>
-     <navbar-item icon="user" class="blue" @click.native="showModal = true" ><i class="fa fa-user"></i> Login</navbar-item>
+     <navbar-item icon="user" class="blue" @click.native="showModal = true" ><i class="fa fa-user"></i> {{ !isLoggedIn ? 'Login' : 'Logout' }}</navbar-item>
     </navbar-nav>
     <!-- Search form -->
   </navbar-collapse>
@@ -52,9 +52,9 @@
            <modal v-if="showModal" @close="showModal = false" cascade class="text-left">
           <form id="loginform" class="needs-validation"  @submit.prevent="loginUser">
           <modal-header class="primary-color white-text">
-            <h4 class="title"><fa class="fa fa-user" />User Login</h4>
+            <h4 class="title"><fa class="fa fa-user" />{{ !isLoggedIn ? 'User Login' : 'Logout' }}</h4>
           </modal-header>
-          <modal-body class="grey-text">
+          <modal-body class="grey-text" v-show="!isLoggedIn">
            <p class="h4 text-center mb-4">Sign in</p>
 
           <label for="defaultFormLoginEmailEx" class="grey-text">Your email</label>
@@ -71,13 +71,15 @@
            <div class="red-text" id="validationMsg" v-show="showAlert"> {{ validationMsg }} </div>
           </modal-body>
           <modal-footer>
-            <btn color="secondary" @click.native="showModal = false">Close</btn>
+            <btn color="secondary" @click.native="showModal = false"  v-show="!isLoggedIn">Close</btn>
+            <btn color="secondary" @click.native="logOutUser"  v-show="isLoggedIn">Logout</btn>
             <btn color="primary" @click.native="addUser(loginInfo)" v-show.native="showAddUser">Add User</btn>
-            <btn color="primary" type="submit" >Submit</btn>
+            <btn color="primary" type="submit"  v-show="!isLoggedIn">Submit</btn>
           </modal-footer>
           </form>
         </modal>
   </container>
+
 </div>
 </template>
 <script>
@@ -87,23 +89,6 @@ const TOKEN_KEY = 'user-token';
 const userTokenStorage = {
   fetch: function () {
     var userToken = localStorage.getItem(TOKEN_KEY) || '';
-    if (userToken.length){
-console.log(userToken.length);
-
-   var compDate =  new Date(Date.now());
-   var d = new Date();
-
-   var n = d.getDate();
-   var h = d.getHours();
-   var m = d.getMinutes();
-
-    var decoded = jwt.decode(userToken, {complete: true});
-   var  expire = new Date(decoded.payload.exp)
-    console.log(decoded);
-    console.log(n + ' - ' +  h +  ' - ' + m);
-    console.log(decoded.payload.exp + ' : '  + expire);
-    console.log(compDate);
-    }
     return userToken;
   },
   save: function (token) {
@@ -156,7 +141,7 @@ var localLoginStorage = {
 };
 
 
-
+import EpaLoginModal from './EpaLoginModal';
 import { Navbar, NavbarItem, NavbarNav, NavbarCollapse, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, MdInput, mdbNavbarBrand, Row, Column, MdTextarea, Btn, Fa, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'mdbvue';
 import router from './../router';
 
@@ -172,6 +157,7 @@ export default {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
+    EpaLoginModal,
     mdbNavbarBrand,
     Row,
     Column,
@@ -198,6 +184,11 @@ export default {
                 alert: true,
                 alertText: true
             },
+          user: {
+            emailAddress: '',
+            password: '',
+            roles: ['USER']
+          },
           loginInfo: {
             emailAddress: '',
             password: '',
@@ -219,23 +210,62 @@ export default {
       },
       deep: true
     },
-        userToken: {
-       handler: function (userToken) {
-         console.log('userToken saved watch');
-        localLoginStorage.save(userToken);
-      }
+    userToken: {
+      handler: function (userToken) {
+         console.log('saved userToken watch');
+        userTokenStorage.save(userToken);
+      },
+      deep: true
     }
+
+
   },
+   computed: {
+     isLoggedIn: function(){
+      let loggedIn = false;
+      this.user = {
+        emailAddress: 'guest@',
+        password: '',
+        roles: ['GUEST']
+      };
+
+       if (this.userToken.length){
+          let decoded = jwt.decode(this.userToken, {complete: true}),
+              compareDate = (new Date(Date.now()).getUTCDate() ),
+              compareHour = (new Date(Date.now()).getUTCHours() - 1),
+              expireDate = new Date(decoded.payload.exp).getUTCDate(),
+              expireHour = new Date(decoded.payload.exp).getUTCHours(),
+              jwtUserData = decoded.payload.data;
+          this.user = {
+              emailAddress: 'jwtUserData.emailAddress',
+              password: '',
+              roles: jwtUserData.roles
+            };
+          loggedIn = true;
+          // check time exp
+          if (compareDate > expireDate || compareHour > expireHour){
+            this.userToken = '';
+            loggedIn = false;
+          }
+        }
+        else {
+        this.userToken = '';
+        }
+      return loggedIn;
+     }
+   },
    methods: {
      loginUser: function () {
       var value = this.loginInfo;
+      // form validation
       this.validateLogin(value);
-
+      // check to see if the user is valid
       this.validateUser(value);
       // if there is a validationMessage return so it displays
       if(this.showAlert = true){
         return
       }
+      //reset the view model login info object
       this.loginInfo = {
                 emailAddress: '',
                 password: '',
@@ -262,6 +292,7 @@ export default {
         this.showAlert = true;
         return
       }
+      // hide the add user button
       this.showAddUser = false;
     },
     validateUser: function (loginValues){
@@ -270,7 +301,7 @@ export default {
             console.log('in validate user 2' , loginValues.emailAddress,  '-', user.emailAddress);
               let foundUser = this.users[i];
               if (foundUser.password === loginValues.password){
-                this.saveToken(foundUser);
+                this.signToken(foundUser);
                 this.removeValidationMessage();
                 return
               }
@@ -298,20 +329,25 @@ export default {
       this.showAlert = true;
       this.showAddUser = true;
     },
-    saveToken: function(user) {
+    signToken: function(user) {
       let jwtData = {
         emailAddress: user.emailAddress,
         userId: user.id,
         roles: user.roles
       }
-      var token = this.theJwt.sign({
-  exp: Date.now() + (1000 * 60 * 60),
-  data: jwtData
-}, 'usingalongchemicalnameforsecret');
-      this.userTokenStorage.save(token);
+       this.userToken = this.theJwt.sign({
+        exp: Date.now() + (1000 * 60 * 60),
+        data: jwtData
+      }, 'usingalongchemicalnameforsecret');
+     // this.userTokenStorage.save(token);
     // navigate to authenticated content.
       this.router.push('/richgrid');
       this.showModal = false;
+    },
+    logOutUser: function(){
+      this.userToken = '';
+      this.showModal = false;
+
     }
   }
 };
