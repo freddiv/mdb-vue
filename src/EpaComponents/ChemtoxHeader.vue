@@ -141,7 +141,6 @@ var localLoginStorage = {
 };
 
 
-import EpaLoginModal from './EpaLoginModal';
 import { Navbar, NavbarItem, NavbarNav, NavbarCollapse, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, MdInput, mdbNavbarBrand, Row, Column, MdTextarea, Btn, Fa, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'mdbvue';
 import router from './../router';
 
@@ -157,7 +156,6 @@ export default {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
-    EpaLoginModal,
     mdbNavbarBrand,
     Row,
     Column,
