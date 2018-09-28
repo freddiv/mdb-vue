@@ -1,6 +1,6 @@
 <template>
   <container>
-           <modal v-if="showModal" @close="showModal = false" cascade class="text-left">
+           <modal v-if="showMod" @close="closeModal" cascade class="text-left">
           <form id="loginform" class="needs-validation"  @submit.prevent="loginUser">
           <modal-header class="primary-color white-text">
             <h4 class="title"><fa class="fa fa-user" />User Login</h4>
@@ -22,8 +22,8 @@
            <div class="red-text" id="validationMsg" v-show="showAlert"> {{ validationMsg }} </div>
           </modal-body>
           <modal-footer>
-            <btn color="secondary" @click.native="showModal = false">Close</btn>
-            <btn color="primary" @click.native="addUser(loginInfo)" v-show.native="showAddUser">Add User</btn>
+            <btn color="secondary" @click.native="closeModal">Close</btn>
+            <btn color="primary" @click.native="addUser(loginInfo)" v-show="showAddUser">Add User</btn>
             <btn color="primary" type="submit" >Submit</btn>
           </modal-footer>
           </form>
@@ -32,11 +32,69 @@
 </template>
 
 <script>
+import {userAuthMixin} from './mixins/userAuthMixin'
+import router from './../router';
 import { Container,  MdInput, Row, Column, MdTextarea, Btn, Fa, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'mdbvue';
+console.log(userAuthMixin);
+const jwt = require('jsonwebtoken');
+const TOKEN_KEY = 'user-token';
+const userTokenStorage = {
+  fetch: function () {
+    var userToken = localStorage.getItem(TOKEN_KEY) || '';
+    return userToken;
+  },
+  save: function (token) {
+    localStorage.setItem(TOKEN_KEY, token);
+  }
+};
 
+var STORAGE_KEY = 'local-user-info';
+var localLoginStorage = {
+  fetch: function () {
+    var users = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (users.length === 0) {
+       users = [
+            {
+                emailAddress: 'valone.carlf@epa.gov',
+                password: 'password',
+                roles: ['USER', 'ADMIN']
+            },
+             {
+                emailAddress: 'dunne.jeremy@epa.gov',
+                password: 'password',
+                roles: ['USER', 'ADMIN']
+            },
+             {
+                emailAddress: 'edwards.jeff@epa.gov',
+                password: 'password',
+                roles: ['USER', 'ADMIN']
+            },
+             {
+                emailAddress: 'kohl.loren@epa.gov',
+                password: 'password',
+                roles: ['USER', 'ADMIN']
+            },
+             {
+                emailAddress: 'grulke.chris@epa.gov',
+                password: 'password',
+                roles: ['USER', 'ADMIN']
+            }
+          ];
+    }
+    users.forEach(function (user, index) {
+      user.id = index;
+    });
+    users.uid = users.length;
+    return users;
+  },
+  save: function (users) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+  }
+};
 
 export default {
   name: 'EpaLoginModal',
+  mixins: [userAuthMixin],
   components: {
     Container,
     MdInput,
@@ -53,11 +111,44 @@ export default {
     ModalFooter
   },
   props:[
-    'showModal',
-    'loggedIn'
+    'showMod',
+    'logdIn'
   ],
     data() {
       return {
+          STORAGE_KEY: 'local-user-info',
+          users: JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
+        {
+            emailAddress: 'valone.carlf@epa.gov',
+            password: 'password',
+            roles: ['USER', 'ADMIN'],
+            id: 1
+        },
+         {
+            emailAddress: 'dunne.jeremy@epa.gov',
+            password: 'password',
+            roles: ['USER', 'ADMIN'],
+            id: 2
+        },
+         {
+            emailAddress: 'edwards.jeff@epa.gov',
+            password: 'password',
+            roles: ['USER', 'ADMIN'],
+            id: 3
+        },
+         {
+            emailAddress: 'kohl.loren@epa.gov',
+            password: 'password',
+            roles: ['USER', 'ADMIN'],
+            id: 4
+        },
+         {
+            emailAddress: 'grulke.chris@epa.gov',
+            password: 'password',
+            roles: ['USER', 'ADMIN'],
+            id: 5
+        }
+      ],
           showAlert: false,
           validationMsg: '',
           loggedIn: false,
@@ -82,7 +173,7 @@ export default {
           userTokenStorage: userTokenStorage,
           theJwt: jwt,
           userJwt: '',
-          userToken: userTokenStorage.fetch(),
+          userToken: localStorage.getItem(TOKEN_KEY) || '',
           router: router
       }
   },
@@ -101,8 +192,6 @@ export default {
       },
       deep: true
     }
-
-
   },
    computed: {
      isLoggedIn: function(){
@@ -139,6 +228,12 @@ export default {
      }
    },
    methods: {
+     closeModal: function(event){
+       console.log(this.showModal);
+       this.showModal = false;
+       this.$emit('closeModal', this.showModal);
+     },
+
      loginUser: function () {
       var value = this.loginInfo;
       // form validation
@@ -226,11 +321,11 @@ export default {
      // this.userTokenStorage.save(token);
     // navigate to authenticated content.
       this.router.push('/richgrid');
-      this.showModal = false;
+      this.closeModal();
     },
     logOutUser: function(){
       this.userToken = '';
-      this.showModal = false;
+      this.closeModal();
 
     }
   }

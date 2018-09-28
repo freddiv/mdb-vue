@@ -48,7 +48,7 @@
     <!-- Search form -->
   </navbar-collapse>
 </navbar>
-// login goes here
+<epa-login-modal :logdIn="loggedIn" :showMod="showModal" @closeModal="showModal = false"  ></epa-login-modal>
 </div>
 </template>
 <script>
@@ -64,51 +64,6 @@ const userTokenStorage = {
     localStorage.setItem(TOKEN_KEY, token);
   }
 };
-
-var STORAGE_KEY = 'local-user-info';
-var localLoginStorage = {
-  fetch: function () {
-    var users = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    if (users.length === 0) {
-       users = [
-            {
-                emailAddress: 'valone.carlf@epa.gov',
-                password: 'password',
-                roles: ['USER', 'ADMIN']
-            },
-             {
-                emailAddress: 'dunne.jeremy@epa.gov',
-                password: 'password',
-                roles: ['USER', 'ADMIN']
-            },
-             {
-                emailAddress: 'edwards.jeff@epa.gov',
-                password: 'password',
-                roles: ['USER', 'ADMIN']
-            },
-             {
-                emailAddress: 'kohl.loren@epa.gov',
-                password: 'password',
-                roles: ['USER', 'ADMIN']
-            },
-             {
-                emailAddress: 'grulke.chris@epa.gov',
-                password: 'password',
-                roles: ['USER', 'ADMIN']
-            }
-          ];
-    }
-    users.forEach(function (user, index) {
-      user.id = index;
-    });
-    users.uid = users.length;
-    return users;
-  },
-  save: function (users) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-  }
-};
-
 
 import EpaLoginModal from './EpaLoginModal';
 import { Navbar, NavbarItem, NavbarNav, NavbarCollapse, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, MdInput, mdbNavbarBrand, Row, Column, MdTextarea, Btn, Fa, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'mdbvue';
@@ -134,10 +89,6 @@ export default {
     MdTextarea,
     Btn,
     Fa,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     jwt,
     router
   },
@@ -146,7 +97,6 @@ export default {
           showAlert: false,
           validationMsg: '',
           loggedIn: false,
-          users: localLoginStorage.fetch(),
           showModal: false,
           showAddUser: false,
           alertObj: {
@@ -158,8 +108,6 @@ export default {
             password: '',
             roles: ['USER']
           },
-          localLoginStorage: localLoginStorage,
-          userTokenStorage: userTokenStorage,
           theJwt: jwt,
           userJwt: '',
           userToken: userTokenStorage.fetch(),
@@ -167,13 +115,6 @@ export default {
       }
   },
    watch: {
-    users: {
-      handler: function (users) {
-         console.log('saved watch');
-        localLoginStorage.save(users);
-      },
-      deep: true
-    },
     userToken: {
       handler: function (userToken) {
          console.log('saved userToken watch');
@@ -201,7 +142,7 @@ export default {
               expireHour = new Date(decoded.payload.exp).getUTCHours(),
               jwtUserData = decoded.payload.data;
           this.user = {
-              emailAddress: 'jwtUserData.emailAddress',
+              emailAddress: jwtUserData.emailAddress,
               password: '',
               roles: jwtUserData.roles
             };
