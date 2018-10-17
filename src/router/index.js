@@ -50,6 +50,7 @@ import ValidationPage from '../docs/ValidationPage';
 import FooterPage from '../docs/FooterPage';
 import RichGridExample from '../docs/RichGridExample';
 import ChemGridPage from '../docs/ChemGridPage';
+import ChemicalGridPage from '../docs/ChemicalGridPage';
 
 Vue.use(Router);
 
@@ -71,6 +72,11 @@ export default new Router({
       path: '/chemgrid',
       name: 'ChemGridPage',
       component: ChemGridPage
+    },
+    {
+      path: '/chemicalgrid',
+      name: 'ChemicalGridPage',
+      component: ChemicalGridPage
     },
     {
       path: '/css',

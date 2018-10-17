@@ -6,7 +6,7 @@
     <div class="col-12">
     <div id="ag-grid-demo">
     <button @click="getSelectedRows()">Get Selected Rows</button>
-        <ag-grid-vue style="width: 900px; height: 500px;"
+        <ag-grid-vue  v-bind:style="gridSize"
                     class="ag-theme-balham"
                     :columnDefs="columnDefs"
                     :rowData="rowData"
@@ -32,6 +32,10 @@ export default {
         name: 'ChemGridPage',
         data() {
             return {
+                gridSize: {
+                  width: "1000px",
+                  height: "600px"
+                },
                 columnDefs: "",
                 rowData: "",
                 gridApi: "",
@@ -51,19 +55,12 @@ export default {
                 const selectedNodes = this.gridApi.getSelectedNodes();
                 const selectedData = selectedNodes.map(node => node.data);
                 const selectedDataStringPresentation = selectedData.map(node => node.id + ' ' + node.n).join(', ');
-                 console.log('wtf');
                 alert(`Selected nodes: ${selectedDataStringPresentation}`);
 
             }
         },
         beforeMount() {
-                this.columnDefs = [
-                {headerName: 'QC Level', field: 'q'},
-                {headerName: 'DTXSID', field: 'id', checkboxSelection: true},
-                {headerName: 'Preferred Name', field: 'n'},
-                {headerName: 'CASRN', field: 'a'}
-
-            ];
+                this.columnDefs = [];
 
               this.autoGroupColumnDef = {
                 headerName: 'ModeQC Level',
@@ -73,11 +70,27 @@ export default {
                     checkbox: true
                 }
             };
-
         fetch('./static/chemicals.json')
         .then(result => result.json())
-        .then(rowData => {
-          this.rowData = rowData;
+        .then(data => {
+          console.log(data);
+          this.columnDefs = []
+          this.gridProperties = data.gridProperties;
+          console.log(this.gridProperties);
+          for (let i = 0; i < this.gridProperties.headerNames.length; i++) {
+          let columnDef = {};
+           columnDef.headerName = this.gridProperties.headerNames[i];
+            columnDef.headerTooltip = this.gridProperties.headerNames[i];
+            columnDef.field = this.gridProperties.fields[i];
+            columnDef.checkboxSelection = this.gridProperties.checkBox[i];
+            columnDef.hide = this.gridProperties.hide[i];
+            columnDef.width = this.gridProperties.cellWidth[i];;
+                      this.columnDefs.push(columnDef);
+                    }
+           this.gridSize.width = this.gridProperties.width;
+           this.gridSize.height = this.gridProperties.height;
+          console.log(this.columnDefs);
+          this.rowData = data.rowData;
         });
         }
     }

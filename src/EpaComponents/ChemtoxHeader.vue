@@ -14,6 +14,7 @@
               <dropdown-item href="#/" waves-fixed>AG Grid</dropdown-item>
               <dropdown-item href="#/richgrid" waves-fixed> AG Rich Grid</dropdown-item>
               <dropdown-item href="#/chemgrid" waves-fixed> AG Chemical Grid</dropdown-item>
+              <dropdown-item href="#/chemicalgrid" waves-fixed>Another Chemical Grid</dropdown-item>
             </dropdown-menu>
           </dropdown>
 
