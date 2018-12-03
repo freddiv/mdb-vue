@@ -9,6 +9,7 @@ import AdvancedPage from '../docs/AdvancedPage';
 
 // FREE
 import HomePage from '../docs/HomePage';
+import UsersPage from '../docs/UsersPage';
 import GridPage from '../docs/GridPage';
 import BadgePage from '../docs/BadgePage';
 import CardPage from '../docs/CardPage';
@@ -51,7 +52,7 @@ import FooterPage from '../docs/FooterPage';
 import RichGridExample from '../docs/RichGridExample';
 import ChemGridPage from '../docs/ChemGridPage';
 import ChemicalGridPage from '../docs/ChemicalGridPage';
-
+import LargeGridPage from '../docs/LargeGridPage';
 Vue.use(Router);
 
 export default new Router({
@@ -61,6 +62,17 @@ export default new Router({
       name: 'Home',
       component: HomePage
     },
+    {
+      path: '/users',
+      name: 'UsersPage',
+      component: UsersPage
+    },
+    {
+      path: '/largeGrid',
+      name: 'LargeGridPage',
+      component: LargeGridPage
+    },
+
 
     // PAGES
     {

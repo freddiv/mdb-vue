@@ -8,13 +8,13 @@
           <modal-body class="grey-text">
            <p class="h4 text-center mb-4">Sign in</p>
 
-          <label for="defaultFormLoginEmailEx" class="grey-text">Your email</label>
+          <label for="emailAddress" class="grey-text">Your email</label>
           <input type="email" id="emailAddress"  v-model="loginInfo.emailAddress" class="form-control" required/>
             <div class="invalid-feedback">
               Please enter your email address.
           </div>
           <br/>
-          <label for="loginPassword" class="grey-text">Your password</label>
+          <label for="password" class="grey-text">Your password</label>
           <input type="password" id="password"  v-model="loginInfo.password" class="form-control" required />
            <div class="invalid-feedback">
              Please enter a pasword.
@@ -234,9 +234,11 @@ export default {
        this.$emit('closeModal', this.showModal);
      },
 
-     loginUser: function () {
-      var value = this.loginInfo;
+     loginUser: function (event) {
+       var value = this.loginInfo;
       // form validation
+      console.log(value)
+      console.log(event)
       this.validateLogin(value);
       // check to see if the user is valid
       this.validateUser(value);

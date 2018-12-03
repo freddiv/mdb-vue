@@ -126,7 +126,8 @@
 
         },
         components: {
-            AgGridVue
+            AgGridVue,
+            
         },
         watch: {
           richGridConfig: {
