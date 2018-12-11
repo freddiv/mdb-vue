@@ -15,31 +15,14 @@
 import ChemtoxHeader from './EpaComponents/ChemtoxHeader';
 import LoginForm from './EpaComponents/LoginForm';
 import EpaFooter from './EpaComponents/EpaFooter'
-import Ftr from '@/components/Footer.vue';
-import EdgHd from '@/components/EdgeHeader.vue';
 
 
-import { Navbar, NavbarItem, NavbarNav, NavbarCollapse, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, MdInput, mdbNavbarBrand, Footer,  Row, Column } from 'mdbvue';
+
 export default {
   name: 'app',
   components: {
     LoginForm,
-    Navbar,
-    NavbarItem,
-    NavbarNav,
-    NavbarCollapse,
-    Container,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    MdInput,
     EpaFooter,
-    EdgHd,
-    mdbNavbarBrand,
-    Footer,
-    Row,
-    Column,
     ChemtoxHeader,
   },
   watch: {

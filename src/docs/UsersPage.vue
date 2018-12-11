@@ -132,10 +132,10 @@ export default {
                 this.columnApi = params.columnApi;
              // get a reference to the column
                 var col = this.columnApi.getColumn("is_active");
-                console.log(col);
+                console.log( this.columnApi);
                 // obtain the column definition from the column
-                var colDef = col.getColDef();
-                console.log(colDef);
+              //  var colDef = col.getColDef();
+                console.log(col);
             },
             getSelectedRows(params) {
               console.log(this.gridApi.getSelectedNodes())
