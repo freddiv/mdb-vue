@@ -1,4 +1,3 @@
-import qs from 'qs';
 import axios from 'axios';
 
 const ROOT_URL = '/static/';
@@ -11,4 +10,12 @@ export default {
           } 
        });
     },
-}
+    fetchUserGrid(){
+      fetch('./static/users.json')
+      .then(result => result.json())
+      .then(data => {
+        console.log(data);
+        return data;
+      });
+    },
+};

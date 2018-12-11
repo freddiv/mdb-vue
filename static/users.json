@@ -6,6 +6,7 @@
     "editable": true,
     "filter": "agTextColumnFilter"
 },
+  "columnDefs": [{"headerName":"Id","field":"id","checkboxSelection":true,"hide":false,"suppressFilter": true,"suppressSorting": true,"width":30},{"headerName":"Last Name","headerTooltip":"Last Name","field":"last_name","hide":false,"filter":"agTextColumnFilter"},{"headerName":"First Name","headerTooltip":"First Name","field":"first_name","hide":false,"filter":"agTextColumnFilter","width":100},{"headerName":"Email Address","headerTooltip":"Email Address","field":"email","hide":false,"filter":"agTextColumnFilter","width":100},{"headerName":"Description","field":"description","hide":true,"suppressFilter": true,"suppressSorting": true,"width":100},{"headerName":"Active","headerTooltip":"Active","field":"is_active","hide":false,"suppressFilter": true,"width":100,"cellRendererFramework": "RenderIsActive"},{"headerName":"Domains","headerTooltip":"Domains","field":"domains","hide":false,"suppressFilter": false,"suppressSorting": true,"width":100},{"headerName":"Expertise","headerTooltip":"Expertise","field":"expertises","hide":false,"suppressFilter": false,"suppressSorting": true,"width":100},{"headerName":"Sources","field":"sources","hide":false,"suppressFilter": true,"suppressSorting": true,"width":100},{"headerName":"Date Created","field":"date_created","hide":false}],
   "headerNames": [
     "Id",
     "Last Name",
@@ -31,7 +32,7 @@
       "description": "none",
       "is_active": true,
       "domains": ["NCCT","TOX50"],
-      "expertises": ["exp1","exp2"],
+      "expertise": ["exp1","exp2"],
       "sources": ["source1","source2"],
       "date_created": "2018-11-23"
   }, {
@@ -42,7 +43,7 @@
     "description": "none",
     "is_active": true,
     "domains": ["NCCT","TOX50"],
-    "expertises": ["exp1","exp2"],
+    "expertise": ["exp1","exp2"],
     "sources": ["source1","source2"],
     "date_created": "2018-11-23"
 }, {
@@ -53,7 +54,7 @@
   "description": "none",
   "is_active": true,
   "domains": ["NCCT","TOX50"],
-  "expertises": ["exp1","exp2"],
+  "expertise": ["exp1","exp2"],
   "sources": ["source1","source2"],
   "date_created": "2018-11-23"
 }, {
@@ -64,7 +65,7 @@
   "description": "none",
   "is_active": true,
   "domains": ["NCCT","TOX50"],
-  "expertises": ["exp1","exp2"],
+  "expertise": ["exp1","exp2"],
   "sources": ["source1","source2"],
   "date_created": "2018-11-23"
 }, {
@@ -75,7 +76,7 @@
   "description": "none",
   "is_active": true,
   "domains": ["NCCT","TOX50"],
-  "expertises": ["exp1","exp2"],
+  "expertise": ["exp1","exp2"],
   "sources": ["source1","source2"],
   "date_created": "2018-11-23"
 }, {
@@ -86,7 +87,7 @@
   "description": "none",
   "is_active": true,
   "domains": ["NCCT","TOX50"],
-  "expertises": ["exp1","exp2"],
+  "expertise": ["exp1","exp2"],
   "sources": ["source1","source2"],
   "date_created": "2018-11-23"
 }, {
@@ -97,7 +98,7 @@
   "description": "none",
   "is_active": true,
   "domains": ["NCCT","TOX50"],
-  "expertises": ["exp1","exp2"],
+  "expertise": ["exp1","exp2"],
   "sources": ["source1","source2"],
   "date_created": "2018-11-23"
 }]
